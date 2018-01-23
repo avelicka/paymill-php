@@ -78,6 +78,13 @@ class PaypalChecksum extends ChecksumBase
     private $reusablePaymentDescription;
 
     /**
+     * Checkout options
+     *
+     * @var array $checkoutOptions
+     */
+    private $checkoutOptions = [];
+
+    /**
      * Get checksum action
      *
      * @return string
@@ -270,6 +277,29 @@ class PaypalChecksum extends ChecksumBase
     }
 
     /**
+     * Get checkout options
+     *
+     * @return array
+     */
+    public function getCheckoutOptions()
+    {
+        return $this->checkoutOptions;
+    }
+
+    /**
+     * Set checkout options
+     *
+     * @param array $checkoutOptions Checkout options
+     * @return $this
+     */
+    public function setCheckoutOptions(array $checkoutOptions)
+    {
+        $this->checkoutOptions = $checkoutOptions;
+
+        return $this;
+    }
+
+    /**
      * Converts the model into an array to prepare method calls
      * @param string $method should be used for handling the required parameter
      * @return array
@@ -311,6 +341,9 @@ class PaypalChecksum extends ChecksumBase
                 $parameterArray['reusable_payment_description'] = $this->getReusablePaymentDescription();
             }
 
+            foreach ($this->getCheckoutOptions() as $name => $value) {
+                $parameterArray['checkout_options[' . $name . ']'] = $value;
+            }
         }
 
         return $parameterArray;
